@@ -25,7 +25,8 @@ class MongoKuboRepository extends BaseMongoRepository<IKubo, Kubo> {
             eyesId: document.eyesId,
             hatId: document.hatId,
             coins: document.coins,
-            kitchen: new KitchenModel(document.kitchen).toKitchen()
+            lastSession: document.lastSession,
+            kitchen: new KitchenModel(document.kitchen).toKitchen(),
         });
     };
 
@@ -41,7 +42,8 @@ class MongoKuboRepository extends BaseMongoRepository<IKubo, Kubo> {
             eyesId: entity.eyesId,
             hatId: entity.hatId,
             coins: entity.coins,
-            kitchen: entity.kitchen
+            kitchen: entity.kitchen,
+            lastSession: entity.lastSession
         };
     };
 }

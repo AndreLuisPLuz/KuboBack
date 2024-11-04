@@ -14,7 +14,8 @@ interface IKubo {
     hatId: string,
     eyesId: string,
     coins: number,
-    kitchen: IKitchen
+    kitchen: IKitchen,
+    lastSession: Date,
 }
 
 const kuboSchema = new Schema<IKubo>({
@@ -28,6 +29,7 @@ const kuboSchema = new Schema<IKubo>({
     hatId: { type: String, ref: "Cosmetic" },
     eyesId: { type: String, ref: "Cosmetic" },
     coins: { type: Number, required: true },
+    lastSession: { type: Date, required: true },
     kitchen: kitchenSchema
 });
 
