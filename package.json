@@ -4,7 +4,8 @@
   "description": "Kubo's backend application",
   "main": "src/presentation/server.ts",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development npx ts-node src/presentation/server.ts"
+    "dev": "cross-env NODE_ENV=development npx ts-node src/presentation/server.ts",
+    "build": "tsc"
   },
   "author": "André Luis Pereira da Luz & Maria Selhorst",
   "license": "ISC",
@@ -17,6 +18,7 @@
     "express": "^4.21.0",
     "express-async-errors": "^3.1.1",
     "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.10.0",
     "mongoose": "^8.6.3",
     "shallow-equal-object": "^1.1.1",
     "ts-pattern": "^5.3.1",
