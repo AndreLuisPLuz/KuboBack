@@ -5,7 +5,7 @@
   "main": "src/presentation/server.ts",
   "scripts": {
     "dev": "cross-env NODE_ENV=development npx ts-node src/presentation/server.ts",
-    "build": "tsc"
+    "build": "npm i && tsc"
   },
   "author": "André Luis Pereira da Luz & Maria Selhorst",
   "license": "ISC",
