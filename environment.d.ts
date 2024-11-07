@@ -4,13 +4,11 @@ declare global {
             NODE_ENV: "development" | "production",
 
             DB_HOST: "localhost" | string,
-            DB_PORT: "27017" | string,
-            DB_NAME: string,
+            DB_USER: string,
+            DB_PASS: string,
 
             APP_PORT: string,
-            APP_SECRET_KEY: string,
-
-            SOCKET_PORT: string,
+            APP_SECRET_KEY: string
         }
     }
 }

@@ -3,13 +3,10 @@ import mongoose from "mongoose";
 
 const getMongoSource = () => {
     const host = process.env.DB_HOST;
-    const port = process.env.DB_PORT;
-    const name = process.env.DB_NAME;
     const user = process.env.DB_USER;
     const pass = process.env.DB_PASS;
 
     const dbString = `mongodb+srv://${user}:${pass}@${host}`;
-    // const dbString = `mongodb://${host}:${port}/${name}`;
     mongoose.connect(dbString, {})
         .then(() => console.log(`[server]: connected to ${dbString}`));
 }
