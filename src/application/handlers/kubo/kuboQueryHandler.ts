@@ -1,14 +1,14 @@
 import { injected } from "brandi";
-import Kubo from "../../domain/aggregates/kubo/kubo";
-import IRepository from "../../domain/seed/repository";
-import GetKuboDetails, { KuboDetails } from "../queries/getKuboDetails";
-import IQueryHandler from "../seed/queryHandler";
-import { INFRA_TOKENS, infrastructureContainer } from "../../infrastructure/container";
-import CriteriaBuilder from "../crossCutting/builders/criteriaBuilder";
-import { IKubo } from "../../infrastructure/schemas/kubo/kuboSchema";
-import NotFoundError from "../errors/notFoundError";
-import Cosmetic from "../../domain/aggregates/cosmetic/cosmetic";
-import KuboMapper from "../mapping/kuboMapper";
+import Kubo from "../../../domain/aggregates/kubo/kubo";
+import IRepository from "../../../domain/seed/repository";
+import GetKuboDetails, { KuboDetails } from "../../queries/kubo/getKuboDetails";
+import IQueryHandler from "../../seed/queryHandler";
+import { INFRA_TOKENS, infrastructureContainer } from "../../../infrastructure/container";
+import CriteriaBuilder from "../../crossCutting/builders/criteriaBuilder";
+import { IKubo } from "../../../infrastructure/schemas/kubo/kuboSchema";
+import NotFoundError from "../../errors/notFoundError";
+import Cosmetic from "../../../domain/aggregates/cosmetic/cosmetic";
+import KuboMapper from "../../mapping/kuboMapper";
 
 class KuboQueryHandler implements IQueryHandler<KuboDetails, GetKuboDetails> {
     private repo: IRepository<Kubo>;

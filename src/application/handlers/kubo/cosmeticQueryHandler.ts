@@ -1,16 +1,16 @@
 import { injected } from "brandi";
-import { INFRA_TOKENS, infrastructureContainer } from "../../infrastructure/container";
-import { ICosmetic } from "../../infrastructure/schemas/cosmetic/cosmeticSchema";
+import { INFRA_TOKENS, infrastructureContainer } from "../../../infrastructure/container";
+import { ICosmetic } from "../../../infrastructure/schemas/cosmetic/cosmeticSchema";
 
-import Cosmetic from "../../domain/aggregates/cosmetic/cosmetic";
-import IRepository from "../../domain/seed/repository";
-import IQueryHandler from "../seed/queryHandler";
-import NotFoundError from "../errors/notFoundError";
-import pagination from "../crossCutting/builders/pagination";
-import CriteriaBuilder from "../crossCutting/builders/criteriaBuilder";
+import Cosmetic from "../../../domain/aggregates/cosmetic/cosmetic";
+import IRepository from "../../../domain/seed/repository";
+import IQueryHandler from "../../seed/queryHandler";
+import NotFoundError from "../../errors/notFoundError";
+import pagination from "../../crossCutting/builders/pagination";
+import CriteriaBuilder from "../../crossCutting/builders/criteriaBuilder";
 
-import GetCosmeticDetails, { CosmeticDetails } from "../queries/getCosmeticDetails";
-import GetManyCosmetics, { ManyCosmetics } from "../queries/getManyCosmetics";
+import GetCosmeticDetails, { CosmeticDetails } from "../../queries/kubo/getCosmeticDetails";
+import GetManyCosmetics, { ManyCosmetics } from "../../queries/kubo/getManyCosmetics";
 
 type CosmeticQuery =
     | GetCosmeticDetails

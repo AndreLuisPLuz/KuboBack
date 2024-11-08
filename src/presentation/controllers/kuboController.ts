@@ -2,11 +2,11 @@ import { injected } from "brandi";
 import { APP_TOKENS } from "../../application/container";
 import { Request, Response } from "express";
 
-import CosmeticCommandHandler from "../../application/handlers/cosmeticCommandHandler";
-import KuboCommandHandler from "../../application/handlers/kuboCommandHandler";
-import CreateCosmetic from "../../application/commands/createCosmetic";
-import CosmeticQueryHandler from "../../application/handlers/cosmeticQueryHandler";
-import GetManyCosmetics from "../../application/queries/getManyCosmetics";
+import CosmeticCommandHandler from "../../application/handlers/kubo/cosmeticCommandHandler";
+import KuboCommandHandler from "../../application/handlers/kubo/kuboCommandHandler";
+import CreateCosmetic from "../../application/commands/kubo/createCosmetic";
+import CosmeticQueryHandler from "../../application/handlers/kubo/cosmeticQueryHandler";
+import GetManyCosmetics from "../../application/queries/kubo/getManyCosmetics";
 
 class KuboController {
     private kuboCommHandler: KuboCommandHandler;

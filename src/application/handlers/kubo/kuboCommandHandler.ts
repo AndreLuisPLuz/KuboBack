@@ -1,18 +1,18 @@
 import { injected } from "brandi";
-import { INFRA_TOKENS, infrastructureContainer } from "../../infrastructure/container";
+import { INFRA_TOKENS, infrastructureContainer } from "../../../infrastructure/container";
 
-import IUserRepository from "../../domain/aggregates/user/contracts/userRepository";
-import IRepository from "../../domain/seed/repository";
-import ICommandHandler from "../seed/commandHandler";
-import NotFoundError from "../errors/notFoundError";
-import UpsertError from "../errors/upsertError";
+import IUserRepository from "../../../domain/aggregates/user/contracts/userRepository";
+import IRepository from "../../../domain/seed/repository";
+import ICommandHandler from "../../seed/commandHandler";
+import NotFoundError from "../../errors/notFoundError";
+import UpsertError from "../../errors/upsertError";
 
-import Cosmetic from "../../domain/aggregates/cosmetic/cosmetic";
-import Kubo from "../../domain/aggregates/kubo/kubo";
-import Nickname from "../../domain/aggregates/kubo/nickname";
+import Cosmetic from "../../../domain/aggregates/cosmetic/cosmetic";
+import Kubo from "../../../domain/aggregates/kubo/kubo";
+import Nickname from "../../../domain/aggregates/kubo/nickname";
 
-import CreateKubo from "../commands/createKubo";
-import User from "../../domain/aggregates/user/user";
+import CreateKubo from "../../commands/kubo/createKubo";
+import User from "../../../domain/aggregates/user/user";
 
 type KuboCommand =
     | CreateKubo;

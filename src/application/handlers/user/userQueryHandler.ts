@@ -1,12 +1,12 @@
-import { INFRA_TOKENS, infrastructureContainer } from "../../infrastructure/container";
+import { INFRA_TOKENS, infrastructureContainer } from "../../../infrastructure/container";
 import { injected } from "brandi";
 
-import User from "../../domain/aggregates/user/user";
-import IRepository from "../../domain/seed/repository";
-import IQueryHandler from "../seed/queryHandler";
-import NotFoundError from "../errors/notFoundError";
+import User from "../../../domain/aggregates/user/user";
+import IRepository from "../../../domain/seed/repository";
+import IQueryHandler from "../../seed/queryHandler";
+import NotFoundError from "../../errors/notFoundError";
 
-import GetUserDetails, { UserDetails } from "../queries/getUserDetails";
+import GetUserDetails, { UserDetails } from "../../queries/getUserDetails";
 
 type UserQuery =
     | GetUserDetails;

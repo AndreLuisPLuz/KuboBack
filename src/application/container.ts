@@ -1,12 +1,12 @@
 import { Container, token } from "brandi";
 import { infrastructureContainer } from "../infrastructure/container";
 
-import UserCommandHandler from "./handlers/userCommandHandler";
-import UserQueryHandler from "./handlers/userQueryHandler";
-import CosmeticCommandHandler from "./handlers/cosmeticCommandHandler";
-import KuboCommandHandler from "./handlers/kuboCommandHandler";
+import UserCommandHandler from "./handlers/user/userCommandHandler";
+import UserQueryHandler from "./handlers/user/userQueryHandler";
+import CosmeticCommandHandler from "./handlers/kubo/cosmeticCommandHandler";
+import KuboCommandHandler from "./handlers/kubo/kuboCommandHandler";
 import UserContext from "./crossCutting/contexts/userContext";
-import CosmeticQueryHandler from "./handlers/cosmeticQueryHandler";
+import CosmeticQueryHandler from "./handlers/kubo/cosmeticQueryHandler";
 
 const APP_TOKENS = {
     cosmeticCommandHandler: token<CosmeticCommandHandler>("cosmeticCommandHandler"),

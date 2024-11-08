@@ -1,4 +1,4 @@
-import IQuery from "../seed/query";
+import IQuery from "../../seed/query";
 import { v4 as uuid } from "uuid";
 import { CosmeticDetails } from "./getCosmeticDetails";
 

@@ -1,23 +1,23 @@
 import "dotenv/config";
 
 import { injected } from "brandi";
-import { INFRA_TOKENS, infrastructureContainer } from "../../infrastructure/container";
-import { APP_TOKENS, applicationContainer } from "../container";
-import { SucceededAuth } from "../../domain/aggregates/user/types/authenticationResult";
+import { INFRA_TOKENS, infrastructureContainer } from "../../../infrastructure/container";
+import { APP_TOKENS, applicationContainer } from "../../container";
+import { SucceededAuth } from "../../../domain/aggregates/user/types/authenticationResult";
 
-import User from "../../domain/aggregates/user/user";
-import ICommandHandler from "../seed/commandHandler";
-import RegisterUser from "../commands/registerUser";
-import AuthenticateUser from "../commands/authenticateUser";
-import UpsertError from "../errors/upsertError";
-import Password from "../../domain/aggregates/user/password";
-import IUserRepository from "../../domain/aggregates/user/contracts/userRepository";
-import NotFoundError from "../errors/notFoundError";
-import FailedAuthenticationError from "../errors/failedAuthenticationError";
-import JwtService from "../crossCutting/services/jwtService";
-import IRepository from "../../domain/seed/repository";
-import CriteriaBuilder from "../crossCutting/builders/criteriaBuilder";
-import { IUser } from "../../infrastructure/schemas/user/userSchema";
+import User from "../../../domain/aggregates/user/user";
+import ICommandHandler from "../../seed/commandHandler";
+import RegisterUser from "../../commands/registerUser";
+import AuthenticateUser from "../../commands/user/authenticateUser";
+import UpsertError from "../../errors/upsertError";
+import Password from "../../../domain/aggregates/user/password";
+import IUserRepository from "../../../domain/aggregates/user/contracts/userRepository";
+import NotFoundError from "../../errors/notFoundError";
+import FailedAuthenticationError from "../../errors/failedAuthenticationError";
+import JwtService from "../../crossCutting/services/jwtService";
+import IRepository from "../../../domain/seed/repository";
+import CriteriaBuilder from "../../crossCutting/builders/criteriaBuilder";
+import { IUser } from "../../../infrastructure/schemas/user/userSchema";
 
 type UserCommand =
     | AuthenticateUser

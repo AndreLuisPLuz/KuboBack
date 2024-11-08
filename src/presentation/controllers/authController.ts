@@ -2,11 +2,11 @@ import { Request, Response } from "express";
 import { injected } from "brandi";
 import { APP_TOKENS } from "../../application/container";
 
-import UserCommandHandler from "../../application/handlers/userCommandHandler";
-import UserQueryHandler from "../../application/handlers/userQueryHandler";
+import UserCommandHandler from "../../application/handlers/user/userCommandHandler";
+import UserQueryHandler from "../../application/handlers/user/userQueryHandler";
 
 import RegisterUser from "../../application/commands/registerUser";
-import AuthenticateUser from "../../application/commands/authenticateUser";
+import AuthenticateUser from "../../application/commands/user/authenticateUser";
 import GetUserDetails from "../../application/queries/getUserDetails";
 
 class AuthController {

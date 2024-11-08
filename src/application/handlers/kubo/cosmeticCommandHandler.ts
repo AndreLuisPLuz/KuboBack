@@ -1,11 +1,11 @@
 import { injected } from "brandi";
-import Cosmetic from "../../domain/aggregates/cosmetic/cosmetic";
-import IRepository from "../../domain/seed/repository";
-import CreateCosmetic from "../commands/createCosmetic";
-import ICommandHandler from "../seed/commandHandler";
-import { INFRA_TOKENS, infrastructureContainer } from "../../infrastructure/container";
-import { CosmeticType, Type } from "../../domain/aggregates/cosmetic/cosmeticType";
-import UpsertError from "../errors/upsertError";
+import Cosmetic from "../../../domain/aggregates/cosmetic/cosmetic";
+import IRepository from "../../../domain/seed/repository";
+import CreateCosmetic from "../../commands/kubo/createCosmetic";
+import ICommandHandler from "../../seed/commandHandler";
+import { INFRA_TOKENS, infrastructureContainer } from "../../../infrastructure/container";
+import { CosmeticType, Type } from "../../../domain/aggregates/cosmetic/cosmeticType";
+import UpsertError from "../../errors/upsertError";
 
 type CosmeticCommand = 
     | CreateCosmetic;
