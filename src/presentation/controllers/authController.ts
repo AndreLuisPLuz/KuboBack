@@ -5,9 +5,9 @@ import { APP_TOKENS } from "../../application/container";
 import UserCommandHandler from "../../application/handlers/user/userCommandHandler";
 import UserQueryHandler from "../../application/handlers/user/userQueryHandler";
 
-import RegisterUser from "../../application/commands/registerUser";
+import RegisterUser from "../../application/commands/user/registerUser";
 import AuthenticateUser from "../../application/commands/user/authenticateUser";
-import GetUserDetails from "../../application/queries/getUserDetails";
+import GetUserDetails from "../../application/queries/user/getUserDetails";
 
 class AuthController {
     private userCommandHandler: UserCommandHandler;

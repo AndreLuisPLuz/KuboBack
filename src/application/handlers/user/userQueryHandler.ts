@@ -6,7 +6,7 @@ import IRepository from "../../../domain/seed/repository";
 import IQueryHandler from "../../seed/queryHandler";
 import NotFoundError from "../../errors/notFoundError";
 
-import GetUserDetails, { UserDetails } from "../../queries/getUserDetails";
+import GetUserDetails, { UserDetails } from "../../queries/user/getUserDetails";
 
 type UserQuery =
     | GetUserDetails;

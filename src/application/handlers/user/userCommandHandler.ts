@@ -7,7 +7,7 @@ import { SucceededAuth } from "../../../domain/aggregates/user/types/authenticat
 
 import User from "../../../domain/aggregates/user/user";
 import ICommandHandler from "../../seed/commandHandler";
-import RegisterUser from "../../commands/registerUser";
+import RegisterUser from "../../commands/user/registerUser"; 
 import AuthenticateUser from "../../commands/user/authenticateUser";
 import UpsertError from "../../errors/upsertError";
 import Password from "../../../domain/aggregates/user/password";
@@ -18,6 +18,7 @@ import JwtService from "../../crossCutting/services/jwtService";
 import IRepository from "../../../domain/seed/repository";
 import CriteriaBuilder from "../../crossCutting/builders/criteriaBuilder";
 import { IUser } from "../../../infrastructure/schemas/user/userSchema";
+import InvalidCommandError from "../../errors/invalidCommandError";
 
 type UserCommand =
     | AuthenticateUser
@@ -48,6 +49,7 @@ class UserCommandHandler
         switch (command.concreteType) {
             case "AuthenticateUser": return await this.handleAuthenticateUser(command);
             case "RegisterUser": return await this.handleRegisterUser(command);
+            default: throw new InvalidCommandError(`Non-existing command.`);
         }
     }
 

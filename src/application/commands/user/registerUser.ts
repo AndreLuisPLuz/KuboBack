@@ -1,4 +1,4 @@
-import ICommand from "../seed/command";
+import ICommand from "../../seed/command";
 import { v4 as uuid } from "uuid";
 
 type RegisterUserProps = {
