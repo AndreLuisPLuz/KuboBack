@@ -49,10 +49,7 @@ class KuboCommandHandler implements ICommandHandler<string, CreateKubo> {
     }
 
     private async handleCreateKubo(command: CreateKubo): Promise<string> {
-        const checkCosmetic = async (cosmeticId: string | undefined) => {
-            if (cosmeticId === undefined)
-                return
-
+        const checkCosmetic = async (cosmeticId: string) => {
             const exists = await this.cosmeticRepo.existsAsync(cosmeticId);
 
             if (!exists)
