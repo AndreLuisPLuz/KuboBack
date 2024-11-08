@@ -21,11 +21,14 @@ class MongoCosmeticRepository extends BaseMongoRepository<ICosmetic, Cosmetic> {
     };
 
     protected loadFromDocument = (document: Document<unknown, {}, ICosmetic> & ICosmetic & Required<{ _id: string; }>): Cosmetic => {
-        return Cosmetic.createNew({
-            name: document.name,
-            imagePath: document.imagePath,
-            type: CosmeticType.getInstance(document.type.type as Type),
-        });
+        return Cosmetic.load(
+            document._id,
+            {
+                name: document.name,
+                imagePath: document.imagePath,
+                type: CosmeticType.getInstance(document.type.type as Type),
+            }
+        );
     }
 }
 

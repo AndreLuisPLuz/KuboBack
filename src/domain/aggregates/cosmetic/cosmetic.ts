@@ -22,6 +22,10 @@ class Cosmetic extends Entity<CosmeticProps> {
     public static createNew = (props: CosmeticProps): Cosmetic => {
         return new Cosmetic(props);
     };
+
+    public static load = (id: string, props: CosmeticProps): Cosmetic => {
+        return new Cosmetic(props, id);
+    }
 }
 
 export default Cosmetic;    
