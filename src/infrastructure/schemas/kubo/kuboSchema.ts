@@ -11,7 +11,7 @@ interface IKubo {
     hunger: IKuboStat,
     happiness: IKuboStat,
     color: string,
-    hatId: string,
+    hatId?: string,
     eyesId: string,
     coins: number,
     kitchen: IKitchen,
@@ -27,7 +27,7 @@ const kuboSchema = new Schema<IKubo>({
     happiness: kuboStatSchema,
     color: { type: String, required: true },
     hatId: { type: String, ref: "Cosmetic" },
-    eyesId: { type: String, ref: "Cosmetic" },
+    eyesId: { type: String, ref: "Cosmetic", required: true },
     coins: { type: Number, required: true },
     lastSession: { type: Date, required: true },
     kitchen: kitchenSchema

@@ -5,7 +5,7 @@ type CreateKuboProperties = {
     userId: string;
     nickname: string;
     color: string;
-    hatId: string;
+    hatId?: string;
     eyesId: string;
 };
 

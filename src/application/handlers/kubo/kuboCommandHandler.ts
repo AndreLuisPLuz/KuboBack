@@ -49,16 +49,23 @@ class KuboCommandHandler implements ICommandHandler<string, CreateKubo> {
     }
 
     private async handleCreateKubo(command: CreateKubo): Promise<string> {
+        const checkCosmetic = async (cosmeticId: string | undefined) => {
+            if (cosmeticId === undefined)
+                return
+
+            const exists = await this.cosmeticRepo.existsAsync(cosmeticId);
+
+            if (!exists)
+                throw new NotFoundError("Cosmetics not found.");
+        };
+
         const userExists = this.userRepo.existsAsync(command.userId);
 
         if (!userExists)
             throw new NotFoundError("User not found.");
     
-        const eyesExist = this.cosmeticRepo.existsAsync(command.eyesId);
-        const hatExists = this.cosmeticRepo.existsAsync(command.hatId);
-
-        if (!eyesExist || !hatExists)
-            throw new NotFoundError("Cosmetics not found.");
+        await checkCosmetic(command.eyesId);
+        await checkCosmetic(command.hatId);
 
         const newKubo = Kubo.createNew({
             userId: command.userId,

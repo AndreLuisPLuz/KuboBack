@@ -13,7 +13,7 @@ type KuboProps = {
     hunger: KuboStat;
     happiness: KuboStat;
     coins: number;
-    hatId: string;
+    hatId?: string;
     eyesId: string;
     kitchen: Kitchen;
     lastSession: Date;
