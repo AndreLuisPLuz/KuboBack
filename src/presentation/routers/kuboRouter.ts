@@ -6,6 +6,7 @@ const kuboController = presentationContainer.get(PRES_TOKENS.kuboController);
 
 const kuboRouter = Router();
 kuboRouter.use(authenticate);
+kuboRouter.post("", kuboController.CreateKubo);
 kuboRouter.get("/cosmetic", kuboController.FindManyCosmeticOptions);
 kuboRouter.post("/cosmetic", kuboController.CreateCosmeticOption);
 
