@@ -7,6 +7,7 @@ import KuboCommandHandler from "../../application/handlers/kubo/kuboCommandHandl
 import CreateCosmetic from "../../application/commands/kubo/createCosmetic";
 import CosmeticQueryHandler from "../../application/handlers/kubo/cosmeticQueryHandler";
 import GetManyCosmetics from "../../application/queries/kubo/getManyCosmetics";
+import CreateKubo from "../../application/commands/kubo/createKubo";
 
 class KuboController {
     private kuboCommHandler: KuboCommandHandler;
@@ -22,6 +23,14 @@ class KuboController {
         this.cosmeticCommHandler = cosmeticCommandHandler;
         this.cosmeticQueryHandler = cosmeticQueryHandler;
     }
+
+    public CreateKubo = async (req: Request, res: Response): Promise<Response> => {
+        const kuboId = await this.kuboCommHandler.handleAsync(
+            new CreateKubo(req.body)
+        );
+
+        return res.status(204).json({ id: kuboId });
+    };
 
     public CreateCosmeticOption = async (req: Request, res: Response): Promise<Response> => {
         const cosmeticId = await this.cosmeticCommHandler.handleAsync(
