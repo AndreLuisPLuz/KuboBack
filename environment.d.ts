@@ -8,7 +8,11 @@ declare global {
             DB_PASS: string,
 
             APP_PORT: string,
-            APP_SECRET_KEY: string
+            APP_SECRET_KEY: string,
+
+            CLOUD_NAME: string,
+            CLOUD_API_KEY: string,
+            CLOUD_API_SECRET: string,
         }
     }
 }
