@@ -11,7 +11,6 @@ import GetManyCosmetics from "../../application/queries/kubo/getManyCosmetics";
 import CreateKubo from "../../application/commands/kubo/createKubo";
 
 class KuboController {
-    private upload: Multer;
     private kuboCommHandler: KuboCommandHandler;
     private cosmeticCommHandler: CosmeticCommandHandler;
     private cosmeticQueryHandler: CosmeticQueryHandler;
@@ -21,7 +20,6 @@ class KuboController {
             cosmeticCommandHandler: CosmeticCommandHandler,
             cosmeticQueryHandler: CosmeticQueryHandler
     ) {
-        this.upload = multer({ storage: multer.memoryStorage() });
         this.kuboCommHandler = kuboCommandHandler;
         this.cosmeticCommHandler = cosmeticCommandHandler;
         this.cosmeticQueryHandler = cosmeticQueryHandler;

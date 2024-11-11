@@ -4,6 +4,8 @@ import IImageUploadService, { UploadResult } from "../../../domain/contracts/ima
 
 class CloudinaryService implements IImageUploadService
 {
+    private configured: boolean = false;
+
     public configure = async () => {
         const cloudName = process.env.CLOUD_NAME;
         const apiKey = process.env.CLOUD_API_KEY;
@@ -14,16 +16,24 @@ class CloudinaryService implements IImageUploadService
             api_key: apiKey, 
             api_secret: apiSecret
         });
+
+        this.configured = true
     };
 
-    public uploadImage = async (image: Buffer) => {
-        const result = await new Promise((resolve) => {
+    public uploadImage = async (image: Buffer): Promise<UploadResult> => {
+        if (!this.configured)
+            await this.configure();
+
+        const result: any = await new Promise((resolve) => {
             cloudinary.uploader.upload_stream((error, uploadResult) => {
                 return resolve(uploadResult);
             }).end(image);
         });
 
-        return result as UploadResult;
+        return {
+            format: result.format,
+            imageUrl: result.secure_url
+        };
     };
 }
 
