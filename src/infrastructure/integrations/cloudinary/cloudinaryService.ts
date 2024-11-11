@@ -1,8 +1,8 @@
 import "dotenv/config";
 import { v2 as cloudinary } from 'cloudinary';
-import UploadResult from "./types/uploadResult";
+import ImageUploadService, { UploadResult } from "../../../domain/contracts/imageUploadService";
 
-class CloudinaryService
+class CloudinaryService implements ImageUploadService
 {
     public configure = async () => {
         const cloudName = process.env.CLOUD_NAME;
