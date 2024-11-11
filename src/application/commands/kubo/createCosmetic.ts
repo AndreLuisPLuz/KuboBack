@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 
 type CreateCosmeticProps = {
     name: string,
-    imagePath: string,
+    image: Buffer,
     cosmeticType: "Hat" | "Eyes"
 };
 
@@ -13,7 +13,7 @@ class CreateCosmetic implements ICommand<CreateCosmeticProps> {
     concreteType: "CreateCosmetic" = "CreateCosmetic";
 
     public get name() { return this.props.name };
-    public get imagePath() { return this.props.imagePath };
+    public get image() { return this.props.image };
     public get type() { return this.props.cosmeticType };
 
     constructor(props: CreateCosmeticProps) {

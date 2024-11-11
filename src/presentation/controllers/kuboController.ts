@@ -2,6 +2,7 @@ import { injected } from "brandi";
 import { APP_TOKENS } from "../../application/container";
 import { Request, Response } from "express";
 
+import multer, { Multer } from "multer";
 import CosmeticCommandHandler from "../../application/handlers/kubo/cosmeticCommandHandler";
 import KuboCommandHandler from "../../application/handlers/kubo/kuboCommandHandler";
 import CreateCosmetic from "../../application/commands/kubo/createCosmetic";
@@ -10,6 +11,7 @@ import GetManyCosmetics from "../../application/queries/kubo/getManyCosmetics";
 import CreateKubo from "../../application/commands/kubo/createKubo";
 
 class KuboController {
+    private upload: Multer;
     private kuboCommHandler: KuboCommandHandler;
     private cosmeticCommHandler: CosmeticCommandHandler;
     private cosmeticQueryHandler: CosmeticQueryHandler;
@@ -19,6 +21,7 @@ class KuboController {
             cosmeticCommandHandler: CosmeticCommandHandler,
             cosmeticQueryHandler: CosmeticQueryHandler
     ) {
+        this.upload = multer({ storage: multer.memoryStorage() });
         this.kuboCommHandler = kuboCommandHandler;
         this.cosmeticCommHandler = cosmeticCommandHandler;
         this.cosmeticQueryHandler = cosmeticQueryHandler;
@@ -33,8 +36,14 @@ class KuboController {
     };
 
     public CreateCosmeticOption = async (req: Request, res: Response): Promise<Response> => {
+        if (!req.file)
+            return res.status(400).json({ error: "No image file uploaded" });
+    
+        const image = req.file.buffer;
+        const { name, cosmeticType } = req.body;
+
         const cosmeticId = await this.cosmeticCommHandler.handleAsync(
-            new CreateCosmetic(req.body)
+            new CreateCosmetic({name, cosmeticType, image})
         );
 
         return res.status(201).json({ id: cosmeticId });
