@@ -4,10 +4,10 @@ type UploadResult = {
     imageUrl: string,
 };
 
-interface ImageUploadService {
+interface IImageUploadService {
     configure: () => Promise<void>;
     uploadImage: (image: Buffer) => Promise<UploadResult>;
 };
 
 export type { UploadResult };
-export default ImageUploadService;
+export default IImageUploadService;

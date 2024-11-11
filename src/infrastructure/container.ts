@@ -8,8 +8,11 @@ import MongoTranslationRepository from "./repositories/MongoTranslationRepositor
 import Cosmetic from "../domain/aggregates/cosmetic/cosmetic";
 import MongoCosmeticRepository from "./repositories/MongoCosmeticRepository";
 import User from "../domain/aggregates/user/user";
+import IImageUploadService from "../domain/contracts/imageUploadService";
+import CloudinaryService from "./integrations/cloudinary/cloudinaryService";
 
 const INFRA_TOKENS = {
+    imageUploadService: token<IImageUploadService>("imageUploadService"),
     kuboRepository: token<IRepository<Kubo>>("kuboRepository"),
     userRepository: token<IRepository<User>>("userRepository"),
     translationRepository: token<IRepository<Language>>("translationRepository"),
@@ -17,6 +20,10 @@ const INFRA_TOKENS = {
 };
 
 const infrastructureContainer = new Container();
+
+infrastructureContainer.bind(INFRA_TOKENS.imageUploadService)
+    .toInstance(() => new CloudinaryService())
+    .inTransientScope();
 
 infrastructureContainer.bind(INFRA_TOKENS.kuboRepository)
     .toInstance(() => new MongoKuboRepository())

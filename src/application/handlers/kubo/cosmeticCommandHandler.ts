@@ -6,15 +6,21 @@ import ICommandHandler from "../../seed/commandHandler";
 import { INFRA_TOKENS, infrastructureContainer } from "../../../infrastructure/container";
 import { CosmeticType, Type } from "../../../domain/aggregates/cosmetic/cosmeticType";
 import UpsertError from "../../errors/upsertError";
+import IImageUploadService from "../../../domain/contracts/imageUploadService";
 
 type CosmeticCommand = 
     | CreateCosmetic;
 
 class CosmeticCommandHandler implements ICommandHandler<string, CreateCosmetic> {
     private repo: IRepository<Cosmetic>;
+    private imageUploadService: IImageUploadService;
 
-    constructor (repository: IRepository<Cosmetic>) {
+    constructor (
+            repository: IRepository<Cosmetic>,
+            imageUploadService: IImageUploadService
+    ) {
         this.repo = repository;
+        this.imageUploadService = imageUploadService;
     }
 
     solveDependencies = () => {
@@ -32,9 +38,13 @@ class CosmeticCommandHandler implements ICommandHandler<string, CreateCosmetic> 
     }
 
     private handleCreateCosmetic = async (command: CreateCosmetic): Promise<string> => {
+        const image = command.image;
+        const uploadResult = await this.imageUploadService.uploadImage(image);
+
         const newCosmetic = Cosmetic.createNew({
             type: CosmeticType.getInstance(command.type as Type),
-            ...command.props
+            name: command.name,
+            imagePath: uploadResult.imageUrl
         });
 
         const savedCosmetic = await this.repo.upsertAsync(newCosmetic);
@@ -46,6 +56,10 @@ class CosmeticCommandHandler implements ICommandHandler<string, CreateCosmetic> 
     }
 }
 
-injected(CosmeticCommandHandler, INFRA_TOKENS.cosmeticRepository);
+injected(
+    CosmeticCommandHandler,
+    INFRA_TOKENS.cosmeticRepository,
+    INFRA_TOKENS.imageUploadService
+);
 
 export default CosmeticCommandHandler;
