@@ -10,7 +10,7 @@ type GetManyCosmeticsProps = {
 };
 
 type ManyCosmetics = {
-    cosmetics: Omit<CosmeticDetails, "imagePath">[];
+    cosmetics: CosmeticDetails[];
 } & PaginationInfo;
 
 class GetManyCosmetics implements IQuery<GetManyCosmeticsProps, ManyCosmetics> {

@@ -70,7 +70,8 @@ class CosmeticQueryHandler implements
             cosmetics: cosmeticsFetch.data.map(c => ({
                 id: c._id,
                 name: c.name,
-                type: c.type.type
+                type: c.type.type,
+                imagePath: c.imagePath
             })),
             currentPage: cosmeticsFetch.currentPage,
             totalPages: cosmeticsFetch.totalPages,
