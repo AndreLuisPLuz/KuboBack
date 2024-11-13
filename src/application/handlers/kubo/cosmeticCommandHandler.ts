@@ -12,6 +12,10 @@ import CreateCosmetic from "../../commands/kubo/createCosmetic";
 import DeleteCosmetic from "../../commands/kubo/deleteCosmetic";
 
 import UpsertError from "../../errors/upsertError";
+import Kubo from "../../../domain/aggregates/kubo/kubo";
+import CriteriaBuilder from "../../crossCutting/builders/criteriaBuilder";
+import { IKubo } from "../../../infrastructure/schemas/kubo/kuboSchema";
+import DeleteReferenceError from "../../errors/deleteReferenceError";
 
 type CosmeticCommand = 
     | CreateCosmetic
@@ -20,16 +24,21 @@ type CosmeticCommand =
 class CosmeticCommandHandler
     implements
         ICommandHandler<string, CreateCosmetic>,
-        ICommandHandler<boolean, DeleteCosmetic> {
+        ICommandHandler<void, DeleteCosmetic> {
     private repo: IRepository<Cosmetic>;
+    private kuboRepo: IRepository<Kubo>;
     private imageUploadService: IImageUploadService;
+    private criteriaBuilder: CriteriaBuilder<Kubo>;
 
     constructor (
             repository: IRepository<Cosmetic>,
+            kuboRepositoru: IRepository<Kubo>,
             imageUploadService: IImageUploadService
     ) {
         this.repo = repository;
+        this.kuboRepo = kuboRepositoru;
         this.imageUploadService = imageUploadService;
+        this.criteriaBuilder = new CriteriaBuilder();
     }
 
     solveDependencies = () => {
@@ -37,9 +46,9 @@ class CosmeticCommandHandler
     };
 
     async handleAsync(command: CreateCosmetic): Promise<string>;
-    async handleAsync(command: DeleteCosmetic): Promise<boolean>;
+    async handleAsync(command: DeleteCosmetic): Promise<void>;
 
-    public async handleAsync(command: CosmeticCommand): Promise<string | boolean> {
+    public async handleAsync(command: CosmeticCommand): Promise<string | void> {
         this.solveDependencies();
 
         switch (command.concreteType) {
@@ -66,15 +75,26 @@ class CosmeticCommandHandler
         return savedCosmetic._id;
     }
 
-    private handleDeleteCosmetic = async (command: DeleteCosmetic): Promise<boolean> => {
-        const success = await this.repo.deleteAsync(command.id);
-        return(success);
+    private handleDeleteCosmetic = async (command: DeleteCosmetic): Promise<void> => {
+        const usedAsEyes = await this.kuboRepo.existsByCriteriaAsync(
+            this.criteriaBuilder.tryAdd("eyesId", command.id).build()
+        );
+
+        const usedAsHat = await this.kuboRepo.existsByCriteriaAsync(
+            this.criteriaBuilder.tryAdd("hatId", command.id).build()
+        );
+
+        if (usedAsEyes || usedAsHat)
+            throw new DeleteReferenceError("Cannot delete; kubos already have references to this cosmetic.");
+
+        await this.repo.deleteAsync(command.id);
     };
 }
 
 injected(
     CosmeticCommandHandler,
     INFRA_TOKENS.cosmeticRepository,
+    INFRA_TOKENS.kuboRepository,
     INFRA_TOKENS.imageUploadService
 );
 

@@ -53,11 +53,11 @@ class KuboController {
         if (!req.params.id)
             throw new MisssingParamError("id");
 
-        const success = await this.cosmeticCommHandler.handleAsync(
+        await this.cosmeticCommHandler.handleAsync(
             new DeleteCosmetic({ id: req.params.id })
         );
 
-        return res.status(200).json({ success: success });
+        return res.status(204);
     };
 
     public FindManyCosmeticOptions = async (req: Request, res: Response): Promise<Response> => {

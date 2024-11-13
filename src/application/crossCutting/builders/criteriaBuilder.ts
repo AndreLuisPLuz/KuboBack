@@ -22,7 +22,10 @@ class CriteriaBuilder<TEntity> {
     }
 
     build = (): Criterion<TEntity>[] => {
-        return this.criteria;
+        var result = this.criteria;
+        this.criteria = [];
+
+        return result;
     }
 }
 
