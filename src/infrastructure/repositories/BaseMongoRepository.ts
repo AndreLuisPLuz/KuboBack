@@ -10,6 +10,11 @@ abstract class BaseMongoRepository<TInterface, TEntity extends Entity<any>>
     constructor(model: Model<TInterface>) {
         this.model = model;
     }
+
+    deleteAsync = async (id: string): Promise<boolean> => {
+        const result = await this.model.deleteOne({ _id: id }).exec();
+        return result.acknowledged;
+    };
     
     existsAsync = async (id: string): Promise<boolean> => {
         const document = await this.model.exists({ _id: id });

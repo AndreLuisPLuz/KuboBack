@@ -1,17 +1,26 @@
 import { injected } from "brandi";
-import Cosmetic from "../../../domain/aggregates/cosmetic/cosmetic";
-import IRepository from "../../../domain/seed/repository";
-import CreateCosmetic from "../../commands/kubo/createCosmetic";
-import ICommandHandler from "../../seed/commandHandler";
 import { INFRA_TOKENS, infrastructureContainer } from "../../../infrastructure/container";
-import { CosmeticType, Type } from "../../../domain/aggregates/cosmetic/cosmeticType";
-import UpsertError from "../../errors/upsertError";
+
+import ICommandHandler from "../../seed/commandHandler";
+
+import IRepository from "../../../domain/seed/repository";
 import IImageUploadService from "../../../domain/contracts/imageUploadService";
+import Cosmetic from "../../../domain/aggregates/cosmetic/cosmetic";
+import { CosmeticType, Type } from "../../../domain/aggregates/cosmetic/cosmeticType";
+
+import CreateCosmetic from "../../commands/kubo/createCosmetic";
+import DeleteCosmetic from "../../commands/kubo/deleteCosmetic";
+
+import UpsertError from "../../errors/upsertError";
 
 type CosmeticCommand = 
-    | CreateCosmetic;
+    | CreateCosmetic
+    | DeleteCosmetic;
 
-class CosmeticCommandHandler implements ICommandHandler<string, CreateCosmetic> {
+class CosmeticCommandHandler
+    implements
+        ICommandHandler<string, CreateCosmetic>,
+        ICommandHandler<boolean, DeleteCosmetic> {
     private repo: IRepository<Cosmetic>;
     private imageUploadService: IImageUploadService;
 
@@ -28,12 +37,14 @@ class CosmeticCommandHandler implements ICommandHandler<string, CreateCosmetic> 
     };
 
     async handleAsync(command: CreateCosmetic): Promise<string>;
+    async handleAsync(command: DeleteCosmetic): Promise<boolean>;
 
-    public async handleAsync(command: CosmeticCommand): Promise<string> {
+    public async handleAsync(command: CosmeticCommand): Promise<string | boolean> {
         this.solveDependencies();
 
         switch (command.concreteType) {
             case "CreateCosmetic": return await this.handleCreateCosmetic(command);
+            case "DeleteCosmetic": return await this.handleDeleteCosmetic(command);
         } 
     }
 
@@ -54,6 +65,11 @@ class CosmeticCommandHandler implements ICommandHandler<string, CreateCosmetic> 
 
         return savedCosmetic._id;
     }
+
+    private handleDeleteCosmetic = async (command: DeleteCosmetic): Promise<boolean> => {
+        const success = await this.repo.deleteAsync(command.id);
+        return(success);
+    };
 }
 
 injected(

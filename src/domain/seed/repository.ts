@@ -18,6 +18,8 @@ type PaginationInfo = {
 };
 
 interface IRepository<TEntity extends Entity<any>> {
+    deleteAsync: (id: string) => Promise<boolean>;
+
     existsAsync: (id: string) => Promise<boolean>;
 
     existsByCriteriaAsync<TInterface> (criteria: Criterion<TInterface>[]): Promise<boolean>;
