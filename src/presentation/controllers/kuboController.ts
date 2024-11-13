@@ -57,7 +57,7 @@ class KuboController {
             new DeleteCosmetic({ id: req.params.id })
         );
 
-        return res.status(204);
+        return res.status(204).json();
     };
 
     public FindManyCosmeticOptions = async (req: Request, res: Response): Promise<Response> => {
