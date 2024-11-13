@@ -11,5 +11,6 @@ kuboRouter.use(authenticate);
 kuboRouter.post("", kuboController.CreateKubo);
 kuboRouter.get("/cosmetic", kuboController.FindManyCosmeticOptions);
 kuboRouter.post("/cosmetic", upload.single("image"), kuboController.CreateCosmeticOption);
+kuboRouter.delete("/cosmetic/:id", kuboController.DeleteCosmeticOption);
 
 export default kuboRouter;
