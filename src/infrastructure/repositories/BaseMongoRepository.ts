@@ -13,7 +13,7 @@ abstract class BaseMongoRepository<TInterface, TEntity extends Entity<any>>
 
     deleteAsync = async (id: string): Promise<boolean> => {
         const result = await this.model.deleteOne({ _id: id }).exec();
-        return result.acknowledged;
+        return result.deletedCount != 0;
     };
     
     existsAsync = async (id: string): Promise<boolean> => {
