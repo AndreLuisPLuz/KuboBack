@@ -9,6 +9,8 @@ import CreateCosmetic from "../../application/commands/kubo/createCosmetic";
 import CosmeticQueryHandler from "../../application/handlers/kubo/cosmeticQueryHandler";
 import GetManyCosmetics from "../../application/queries/kubo/getManyCosmetics";
 import CreateKubo from "../../application/commands/kubo/createKubo";
+import DeleteCosmetic from "../../application/commands/kubo/deleteCosmetic";
+import MisssingParamError from "../errors/MissingParamError";
 
 class KuboController {
     private kuboCommHandler: KuboCommandHandler;
@@ -45,6 +47,17 @@ class KuboController {
         );
 
         return res.status(201).json({ id: cosmeticId });
+    };
+
+    public DeleteCosmeticOption = async (req: Request, res: Response): Promise<Response> => {
+        if (!req.params.id)
+            throw new MisssingParamError("id");
+
+        const success = await this.cosmeticCommHandler.handleAsync(
+            new DeleteCosmetic({ id: req.params.id })
+        );
+
+        return res.status(200).json({ success: success });
     };
 
     public FindManyCosmeticOptions = async (req: Request, res: Response): Promise<Response> => {
