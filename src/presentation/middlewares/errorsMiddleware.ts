@@ -4,15 +4,24 @@ import NotFoundError from "../../application/errors/notFoundError";
 import UpsertError from "../../application/errors/upsertError";
 import InvalidHeaderError from "../../application/errors/invalidHeaderError";
 import InvalidTokenError from "../../application/errors/invalidTokenError";
+import DeleteReferenceError from "../../application/errors/deleteReferenceError";
+import MisssingParamError from "../errors/MissingParamError";
 
 const handleError = (err: Error, req: Request, res: Response, next: NextFunction) => {
     switch (err.constructor) {
         case FailedAuthenticationError:
-            const e = err as FailedAuthenticationError
-            return res.status(400).json(e.result);
+            const failedAuth = err as FailedAuthenticationError
+            return res.status(400).json(failedAuth.result);
+    
+        case MisssingParamError:
+            const missParam = err as MisssingParamError
+            return res.status(400).json({
+                message: missParam.message, param: missParam.param
+            });
 
         case InvalidHeaderError:
         case InvalidTokenError:
+        case DeleteReferenceError:
             return res.status(400).json({ message: err.message });
             
         case NotFoundError:
@@ -29,6 +38,6 @@ const handleError = (err: Error, req: Request, res: Response, next: NextFunction
         
             return res.status(500).json({ message: "Unknown server error" });
         };
-
 }
+
 export default handleError;
