@@ -16,6 +16,7 @@ import Kubo from "../../../domain/aggregates/kubo/kubo";
 import CriteriaBuilder from "../../crossCutting/builders/criteriaBuilder";
 import { IKubo } from "../../../infrastructure/schemas/kubo/kuboSchema";
 import DeleteReferenceError from "../../errors/deleteReferenceError";
+import NotFoundError from "../../errors/notFoundError";
 
 type CosmeticCommand = 
     | CreateCosmetic
@@ -87,7 +88,10 @@ class CosmeticCommandHandler
         if (usedAsEyes || usedAsHat)
             throw new DeleteReferenceError("Cannot delete; kubos already have references to this cosmetic.");
 
-        await this.repo.deleteAsync(command.id);
+        var success = await this.repo.deleteAsync(command.id);
+
+        if (!success)
+            throw new NotFoundError("Cosmetic not found.");
     };
 }
 
