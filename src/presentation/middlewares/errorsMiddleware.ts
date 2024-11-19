@@ -5,7 +5,7 @@ import UpsertError from "../../application/errors/upsertError";
 import InvalidHeaderError from "../../application/errors/invalidHeaderError";
 import InvalidTokenError from "../../application/errors/invalidTokenError";
 import DeleteReferenceError from "../../application/errors/deleteReferenceError";
-import MisssingParamError from "../errors/MissingParamError";
+import MisssingParamError from "../errors/missingParamError";
 
 const handleError = (err: Error, req: Request, res: Response, next: NextFunction) => {
     switch (err.constructor) {

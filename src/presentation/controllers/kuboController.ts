@@ -10,7 +10,7 @@ import CosmeticQueryHandler from "../../application/handlers/kubo/cosmeticQueryH
 import GetManyCosmetics from "../../application/queries/kubo/getManyCosmetics";
 import CreateKubo from "../../application/commands/kubo/createKubo";
 import DeleteCosmetic from "../../application/commands/kubo/deleteCosmetic";
-import MisssingParamError from "../errors/MissingParamError";
+import MisssingParamError from "../errors/missingParamError";
 
 class KuboController {
     private kuboCommHandler: KuboCommandHandler;
