@@ -1,6 +1,6 @@
 import { injected } from "brandi";
 import { APP_TOKENS } from "../../application/container";
-import { Request, Response } from "express";
+import { query, Request, Response } from "express";
 
 import multer, { Multer } from "multer";
 import CosmeticCommandHandler from "../../application/handlers/kubo/cosmeticCommandHandler";
@@ -65,7 +65,7 @@ class KuboController {
             new GetManyCosmetics({
                 page: Number(req.query.page),
                 size: Number(req.query.size),
-                type: req.body.type || undefined,
+                type: (req.query.type as "Hat" | "Eyes" | undefined),
             })
         );
 

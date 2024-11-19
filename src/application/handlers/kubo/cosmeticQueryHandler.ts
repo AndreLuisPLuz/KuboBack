@@ -11,6 +11,7 @@ import CriteriaBuilder from "../../crossCutting/builders/criteriaBuilder";
 
 import GetCosmeticDetails, { CosmeticDetails } from "../../queries/kubo/getCosmeticDetails";
 import GetManyCosmetics, { ManyCosmetics } from "../../queries/kubo/getManyCosmetics";
+import { ICosmeticType } from "../../../infrastructure/schemas/cosmetic/cosmeticTypeSchema";
 
 type CosmeticQuery =
     | GetCosmeticDetails
@@ -26,7 +27,9 @@ class CosmeticQueryHandler implements
     }
 
     solveDependencies = (): void => {
-        this.repo = infrastructureContainer.get(INFRA_TOKENS.cosmeticRepository);
+        this.repo = infrastructureContainer.get(
+            INFRA_TOKENS.cosmeticRepository
+        );
     };
 
     async handleAsync(query: GetCosmeticDetails): Promise<CosmeticDetails>;
@@ -56,9 +59,13 @@ class CosmeticQueryHandler implements
     }
 
     private async handleGetManyCosmetics(query: GetManyCosmetics): Promise<ManyCosmetics> {
+        const type: ICosmeticType | undefined = query.type
+            ? { type: query.type }
+            : undefined
+
         const criteriaBuilder = new CriteriaBuilder<ICosmetic>();
         const criteria = criteriaBuilder
-            .tryAdd("type", query.type)
+            .tryAdd("type", type)
             .build();
 
         const cosmeticsFetch = await this.repo.findManyAsync(

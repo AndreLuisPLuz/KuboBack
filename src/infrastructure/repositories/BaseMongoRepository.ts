@@ -1,7 +1,8 @@
 import { HydratedDocument, Model } from "mongoose";
+import { match } from "ts-pattern";
 import IRepository, { Criterion, PaginationInfo, PaginationOptions } from "../../domain/seed/repository";
 import Entity from "../../domain/seed/entity";
-import { match } from "ts-pattern";
+import Queue from "@esm2cjs/yocto-queue";
 
 abstract class BaseMongoRepository<TInterface, TEntity extends Entity<any>>
         implements IRepository<TEntity> {
@@ -22,7 +23,7 @@ abstract class BaseMongoRepository<TInterface, TEntity extends Entity<any>>
     };
     
     async existsByCriteriaAsync<TInterface>(criteria: Criterion<TInterface>[]): Promise<boolean> {
-        const filter = this.buildCriteria(criteria);
+        const filter = this.buildFilter(criteria);
 
         const document = await this.model.exists(filter);
 
@@ -40,7 +41,7 @@ abstract class BaseMongoRepository<TInterface, TEntity extends Entity<any>>
     };
 
     async findOneAsync<TInterface>(criteria: Criterion<TInterface, keyof TInterface>[]): Promise<TEntity | null> {
-        const filter = this.buildCriteria(criteria);
+        const filter = this.buildFilter(criteria);
 
         const document = await this.model.findOne(filter).exec();
 
@@ -55,7 +56,7 @@ abstract class BaseMongoRepository<TInterface, TEntity extends Entity<any>>
             criteria: Criterion<TInterface, keyof TInterface>[],
             pagination?: PaginationOptions
     )       : Promise<{ data: TEntity[] } & PaginationInfo> {
-        const filter = this.buildCriteria(criteria);
+        const filter = this.buildFilter(criteria);
 
         let query = this.model.find(filter);
         let paginationInfo: PaginationInfo = { items: 0 };
@@ -109,22 +110,45 @@ abstract class BaseMongoRepository<TInterface, TEntity extends Entity<any>>
         };
     }
 
-    private buildCriteria<TInterface> (criteria: Criterion<TInterface, keyof TInterface>[]): Record<string, any> {
+    private buildFilter<TInterface>(
+            criteria: Criterion<TInterface, keyof TInterface>[]
+    )       : Record<string, any> {
+        const criteriaQueue: Queue<Criterion<any, keyof any>> = new Queue();
         const filter: Record<string, any> = {};
 
-        criteria.forEach(c => {
-            filter[c.key as string] = match(c.operator)
-                .with("eq", () => c.value)
-                .with("ne", () => { $ne: c.value })
-                .with("gt", () => { $gt: c.value })
-                .with("gte", () => { $gte: c.value })
-                .with("lt", () => { $lt: c.value })
-                .with("lte", () => { $lte: c.value })
-                .otherwise(() => c.value);
-        });
+        criteria.forEach(c => criteriaQueue.enqueue(c));
 
-        return filter;
+        while (criteriaQueue.size != 0) {
+            const criterion = criteriaQueue.dequeue()!;
+
+            if (typeof criterion.value !== "object") {
+                filter[criterion.key as string] = this.buildExpression(criterion);
+                continue;
+            }
+
+            const keys = Object.keys(criterion.value);
+
+            keys.forEach(k => criteriaQueue.enqueue({
+                key: String(criterion.key) + "." + k,
+                value: criterion.value[k]
+            }));
+        }
+
+        return filter
     };
+
+    private buildExpression(
+            criterion: Criterion<any, keyof any>
+    )       : any {
+        return match(criterion.operator)
+            .with("eq", () => criterion.value)
+            .with("ne", () => { $ne: criterion.value })
+            .with("gt", () => { $gt: criterion.value })
+            .with("gte", () => { $gte: criterion.value })
+            .with("lt", () => { $lt: criterion.value })
+            .with("lte", () => { $lte: criterion.value })
+            .otherwise(() => criterion.value);
+    }
 }
 
 export default BaseMongoRepository;
