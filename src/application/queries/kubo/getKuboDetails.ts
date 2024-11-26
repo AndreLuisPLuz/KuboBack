@@ -1,12 +1,13 @@
-import IQuery, { QueryResponse } from "../../seed/query";
+import IQuery from "../../seed/query";
 import { v4 as uuid } from "uuid";
 import { KuboDto } from "./dtos";
+import { OutResponse } from "../../seed/responses";
 
 type GetKuboDetailsProps = {
     userId: string;
 }
 
-type KuboDetails = QueryResponse<KuboDto>;
+type KuboDetails = OutResponse<KuboDto>;
 
 class GetKuboDetails implements IQuery<GetKuboDetailsProps, KuboDetails> {
     queryId: string;

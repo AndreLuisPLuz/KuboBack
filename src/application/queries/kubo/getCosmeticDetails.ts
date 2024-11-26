@@ -1,12 +1,13 @@
-import IQuery, { QueryResponse } from "../../seed/query";
+import IQuery from "../../seed/query";
 import { v4 as uuid } from "uuid";
 import { CosmeticDto } from "./dtos";
+import { OutResponse } from "../../seed/responses";
 
 type GetCosmeticDetailsProps = {
     id: string;
 };
 
-type CosmeticDetails = QueryResponse<CosmeticDto>;
+type CosmeticDetails = OutResponse<CosmeticDto>;
 
 class GetCosmeticDetails implements IQuery<GetCosmeticDetailsProps, CosmeticDetails> {
     queryId: string;

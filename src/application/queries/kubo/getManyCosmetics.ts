@@ -1,6 +1,7 @@
-import IQuery, { QueryPaginatedResponse } from "../../seed/query";
+import IQuery from "../../seed/query";
 import { v4 as uuid } from "uuid";
 import { CosmeticDto } from "./dtos";
+import { OutPaginatedResponse } from "../../seed/responses";
 
 type GetManyCosmeticsProps = {
     page: number;
@@ -8,7 +9,7 @@ type GetManyCosmeticsProps = {
     type?: "Hat" | "Eyes";
 };
 
-type ManyCosmetics = QueryPaginatedResponse<CosmeticDto>;
+type ManyCosmetics = OutPaginatedResponse<CosmeticDto>;
 
 class GetManyCosmetics implements IQuery<GetManyCosmeticsProps, ManyCosmetics> {
     queryId: string;
