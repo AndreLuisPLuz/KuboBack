@@ -8,13 +8,12 @@ import IImageUploadService from "../../../domain/contracts/imageUploadService";
 import Cosmetic from "../../../domain/aggregates/cosmetic/cosmetic";
 import { CosmeticType, Type } from "../../../domain/aggregates/cosmetic/cosmeticType";
 
-import CreateCosmetic from "../../commands/kubo/createCosmetic";
-import DeleteCosmetic from "../../commands/kubo/deleteCosmetic";
+import CreateCosmetic, { CreateCosmeticResult } from "../../commands/kubo/createCosmetic";
+import DeleteCosmetic, { DeleteCosmeticResult } from "../../commands/kubo/deleteCosmetic";
 
 import UpsertError from "../../errors/upsertError";
 import Kubo from "../../../domain/aggregates/kubo/kubo";
 import CriteriaBuilder from "../../crossCutting/builders/criteriaBuilder";
-import { IKubo } from "../../../infrastructure/schemas/kubo/kuboSchema";
 import DeleteReferenceError from "../../errors/deleteReferenceError";
 import NotFoundError from "../../errors/notFoundError";
 
@@ -24,8 +23,8 @@ type CosmeticCommand =
 
 class CosmeticCommandHandler
     implements
-        ICommandHandler<string, CreateCosmetic>,
-        ICommandHandler<void, DeleteCosmetic> {
+        ICommandHandler<CreateCosmeticResult, CreateCosmetic>,
+        ICommandHandler<DeleteCosmeticResult, DeleteCosmetic> {
     private repo: IRepository<Cosmetic>;
     private kuboRepo: IRepository<Kubo>;
     private imageUploadService: IImageUploadService;
@@ -46,10 +45,10 @@ class CosmeticCommandHandler
         this.repo = infrastructureContainer.get(INFRA_TOKENS.cosmeticRepository);
     };
 
-    async handleAsync(command: CreateCosmetic): Promise<string>;
-    async handleAsync(command: DeleteCosmetic): Promise<void>;
+    async handleAsync(command: CreateCosmetic): Promise<CreateCosmeticResult>;
+    async handleAsync(command: DeleteCosmetic): Promise<DeleteCosmeticResult>;
 
-    public async handleAsync(command: CosmeticCommand): Promise<string | void> {
+    public async handleAsync(command: CosmeticCommand): Promise<CreateCosmeticResult | DeleteCosmeticResult> {
         this.solveDependencies();
 
         switch (command.concreteType) {
@@ -58,7 +57,7 @@ class CosmeticCommandHandler
         } 
     }
 
-    private handleCreateCosmetic = async (command: CreateCosmetic): Promise<string> => {
+    private handleCreateCosmetic = async (command: CreateCosmetic): Promise<CreateCosmeticResult> => {
         const image = command.image;
         const uploadResult = await this.imageUploadService.uploadImage(image);
 
@@ -73,7 +72,10 @@ class CosmeticCommandHandler
         if (savedCosmetic == null)
             throw new UpsertError("Could not insert new cosmetic option.");
 
-        return savedCosmetic._id;
+        return {
+            data: { id: savedCosmetic._id },
+            message: "Cosmetic saved with success.",
+        };
     }
 
     private handleDeleteCosmetic = async (command: DeleteCosmetic): Promise<void> => {

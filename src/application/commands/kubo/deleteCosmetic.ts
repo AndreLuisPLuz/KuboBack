@@ -1,9 +1,12 @@
 import ICommand from "../../seed/command";
 import { v4 as uuid } from "uuid";
+import { OutResponse } from "../../seed/responses";
 
 type DeleteCosmeticProperties = {
     id: string,
 };
+
+type DeleteCosmeticResult = void;
 
 class DeleteCosmetic implements ICommand<DeleteCosmeticProperties> {
     commandId: string;
@@ -18,4 +21,5 @@ class DeleteCosmetic implements ICommand<DeleteCosmeticProperties> {
     }
 }
 
+export type { DeleteCosmeticResult };
 export default DeleteCosmetic;

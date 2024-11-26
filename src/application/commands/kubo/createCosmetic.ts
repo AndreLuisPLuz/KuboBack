@@ -1,11 +1,14 @@
 import ICommand from "../../seed/command";
 import { v4 as uuid } from "uuid";
+import { OutResponse } from "../../seed/responses";
 
 type CreateCosmeticProps = {
     name: string,
     image: Buffer,
     cosmeticType: "Hat" | "Eyes"
 };
+
+type CreateCosmeticResult = OutResponse<{ id: string }>;
 
 class CreateCosmetic implements ICommand<CreateCosmeticProps> {
     commandId: string;
@@ -22,4 +25,5 @@ class CreateCosmetic implements ICommand<CreateCosmeticProps> {
     }
 }
 
+export type { CreateCosmeticResult };
 export default CreateCosmetic;
