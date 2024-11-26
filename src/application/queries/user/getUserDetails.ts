@@ -1,15 +1,12 @@
-import IQuery from "../../seed/query";
+import IQuery, { QueryResponse } from "../../seed/query";
 import { v4 as uuid } from "uuid";
+import { UserDto } from "./dtos";
 
 type GetUserDetailsProps = {
     id: string;
 };
 
-type UserDetails = {
-    id: string;
-    username: string;
-    email: string;
-};
+type UserDetails = QueryResponse<UserDto>;
 
 class GetUserDetails implements IQuery<GetUserDetailsProps, UserDetails> {
     queryId: string;
