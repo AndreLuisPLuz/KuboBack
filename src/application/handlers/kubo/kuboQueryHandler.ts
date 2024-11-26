@@ -1,14 +1,16 @@
 import { injected } from "brandi";
+import { INFRA_TOKENS, infrastructureContainer } from "../../../infrastructure/container";
+import { IKubo } from "../../../infrastructure/schemas/kubo/kuboSchema";
+
 import Kubo from "../../../domain/aggregates/kubo/kubo";
 import IRepository from "../../../domain/seed/repository";
-import GetKuboDetails, { KuboDetails } from "../../queries/kubo/getKuboDetails";
 import IQueryHandler from "../../seed/queryHandler";
-import { INFRA_TOKENS, infrastructureContainer } from "../../../infrastructure/container";
 import CriteriaBuilder from "../../crossCutting/builders/criteriaBuilder";
-import { IKubo } from "../../../infrastructure/schemas/kubo/kuboSchema";
 import NotFoundError from "../../errors/notFoundError";
 import Cosmetic from "../../../domain/aggregates/cosmetic/cosmetic";
 import KuboMapper from "../../mapping/kuboMapper";
+
+import GetKuboDetails, { KuboDetails } from "../../queries/kubo/getKuboDetails";
 
 class KuboQueryHandler implements IQueryHandler<KuboDetails, GetKuboDetails> {
     private repo: IRepository<Kubo>;

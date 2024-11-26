@@ -5,4 +5,18 @@ type CosmeticDto = {
     type: "Hat" | "Eyes";
 };
 
-export type { CosmeticDto };
+type KuboDto = {
+    id: string;
+    nickname: string;
+    color: string;
+    health: number;
+    hunger: number;
+    happiness: number;
+    hat: CosmeticDto;
+    eyes: CosmeticDto;
+}
+
+export type {
+    CosmeticDto,
+    KuboDto,
+};
