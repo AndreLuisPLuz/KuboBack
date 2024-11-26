@@ -27,11 +27,11 @@ class KuboController {
     }
 
     public CreateKubo = async (req: Request, res: Response): Promise<Response> => {
-        const kuboId = await this.kuboCommHandler.handleAsync(
+        const result = await this.kuboCommHandler.handleAsync(
             new CreateKubo(req.body)
         );
 
-        return res.status(204).json({ id: kuboId });
+        return res.status(204).json(result);
     };
 
     public CreateCosmeticOption = async (req: Request, res: Response): Promise<Response> => {
@@ -41,11 +41,11 @@ class KuboController {
         const image = req.file.buffer;
         const { name, cosmeticType } = req.body;
 
-        const cosmeticId = await this.cosmeticCommHandler.handleAsync(
+        const result = await this.cosmeticCommHandler.handleAsync(
             new CreateCosmetic({name, cosmeticType, image})
         );
 
-        return res.status(201).json({ id: cosmeticId });
+        return res.status(201).json(result);
     };
 
     public DeleteCosmeticOption = async (req: Request, res: Response): Promise<Response> => {

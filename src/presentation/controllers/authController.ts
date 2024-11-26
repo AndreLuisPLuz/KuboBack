@@ -22,19 +22,19 @@ class AuthController {
     }
 
     registerUser = async (req: Request, res: Response): Promise<Response> => {
-        const userId = await this.userCommandHandler.handleAsync(
+        const result = await this.userCommandHandler.handleAsync(
             new RegisterUser(req.body)
         );
 
-        return res.status(201).json({ id: userId });
+        return res.status(201).json(result);
     };
 
     authenticateUser = async (req: Request, res: Response): Promise<Response> => {
-        const token = await this.userCommandHandler.handleAsync(
+        const result = await this.userCommandHandler.handleAsync(
             new AuthenticateUser(req.body)
         );
 
-        return res.status(200).json({ token: token });
+        return res.status(200).json(result);
     };
 
     fetchUserById = async (req: Request, res: Response): Promise<Response> => {
