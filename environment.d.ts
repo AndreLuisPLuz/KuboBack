@@ -7,6 +7,8 @@ declare global {
             DB_USER: string,
             DB_PASS: string,
 
+            PROXY_URL: string | undefined,
+
             APP_PORT: string,
             APP_SECRET_KEY: string,
 
