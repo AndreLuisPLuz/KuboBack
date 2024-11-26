@@ -1,5 +1,6 @@
 import ICommand from "../../seed/command";
 import { v4 as uuid } from "uuid";
+import { OutResponse } from "../../seed/responses";
 
 type CreateKuboProperties = {
     userId: string;
@@ -8,6 +9,8 @@ type CreateKuboProperties = {
     hatId: string;
     eyesId: string;
 };
+
+type CreateKuboResult = OutResponse<{ id: string }>;
 
 class CreateKubo implements ICommand<CreateKuboProperties> {
     commandId: string;
@@ -26,4 +29,5 @@ class CreateKubo implements ICommand<CreateKuboProperties> {
     }
 }
 
+export type { CreateKuboResult };
 export default CreateKubo;

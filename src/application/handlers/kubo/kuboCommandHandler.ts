@@ -1,7 +1,6 @@
 import { injected } from "brandi";
 import { INFRA_TOKENS, infrastructureContainer } from "../../../infrastructure/container";
 
-import IUserRepository from "../../../domain/aggregates/user/contracts/userRepository";
 import IRepository from "../../../domain/seed/repository";
 import ICommandHandler from "../../seed/commandHandler";
 import NotFoundError from "../../errors/notFoundError";
@@ -11,13 +10,13 @@ import Cosmetic from "../../../domain/aggregates/cosmetic/cosmetic";
 import Kubo from "../../../domain/aggregates/kubo/kubo";
 import Nickname from "../../../domain/aggregates/kubo/nickname";
 
-import CreateKubo from "../../commands/kubo/createKubo";
+import CreateKubo, { CreateKuboResult } from "../../commands/kubo/createKubo";
 import User from "../../../domain/aggregates/user/user";
 
 type KuboCommand =
     | CreateKubo;
 
-class KuboCommandHandler implements ICommandHandler<string, CreateKubo> {
+class KuboCommandHandler implements ICommandHandler<CreateKuboResult, CreateKubo> {
     private repo: IRepository<Kubo>;
     private userRepo: IRepository<User>;
     private cosmeticRepo: IRepository<Cosmetic>;
@@ -38,9 +37,9 @@ class KuboCommandHandler implements ICommandHandler<string, CreateKubo> {
         this.cosmeticRepo = infrastructureContainer.get(INFRA_TOKENS.cosmeticRepository);
     };
 
-    async handleAsync(command: CreateKubo): Promise<string>;
+    async handleAsync(command: CreateKubo): Promise<CreateKuboResult>;
 
-    public async handleAsync(command: KuboCommand): Promise<string> {
+    public async handleAsync(command: KuboCommand): Promise<CreateKuboResult> {
         this.solveDependencies();
 
         switch(command.concreteType) {
@@ -48,7 +47,7 @@ class KuboCommandHandler implements ICommandHandler<string, CreateKubo> {
         }
     }
 
-    private async handleCreateKubo(command: CreateKubo): Promise<string> {
+    private async handleCreateKubo(command: CreateKubo): Promise<CreateKuboResult> {
         const checkCosmetic = async (cosmeticId: string) => {
             const exists = await this.cosmeticRepo.existsAsync(cosmeticId);
 
@@ -78,7 +77,10 @@ class KuboCommandHandler implements ICommandHandler<string, CreateKubo> {
         if (savedKubo == null)
             throw new UpsertError("Could not insert new Kubo.");
 
-        return savedKubo._id;
+        return {
+            data: { id: savedKubo._id },
+            message: "Kubo saved with success."
+        };
     }
 }
 
