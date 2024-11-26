@@ -23,5 +23,5 @@ wss.on("connection", socket => {
 const port = parseInt(process.env.APP_PORT || "8080");
 
 server.listen(port, () =>
-    console.log(`[server]: listening on http://localhost:${port}`)
+    console.log(`[server]: listening on port ${port}`)
 );

@@ -5,7 +5,6 @@ type UploadResult = {
 };
 
 interface IImageUploadService {
-    configure: () => Promise<void>;
     uploadImage: (image: Buffer) => Promise<UploadResult>;
 };
 

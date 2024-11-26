@@ -6,7 +6,7 @@ class CloudinaryService implements IImageUploadService
 {
     private configured: boolean = false;
 
-    public configure = async () => {
+    private configure = async () => {
         const cloudName = process.env.CLOUD_NAME;
         const apiKey = process.env.CLOUD_API_KEY;
         const apiSecret = process.env.CLOUD_API_SECRET;
@@ -25,7 +25,7 @@ class CloudinaryService implements IImageUploadService
             await this.configure();
 
         const result: any = await new Promise((resolve) => {
-            cloudinary.uploader.upload_stream((error, uploadResult) => {
+            cloudinary.uploader.upload_stream((_, uploadResult) => {
                 return resolve(uploadResult);
             }).end(image);
         });
