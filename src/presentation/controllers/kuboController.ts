@@ -1,8 +1,7 @@
 import { injected } from "brandi";
 import { APP_TOKENS } from "../../application/container";
-import { query, Request, Response } from "express";
+import { Request, Response } from "express";
 
-import multer, { Multer } from "multer";
 import CosmeticCommandHandler from "../../application/handlers/kubo/cosmeticCommandHandler";
 import KuboCommandHandler from "../../application/handlers/kubo/kuboCommandHandler";
 import CreateCosmetic from "../../application/commands/kubo/createCosmetic";

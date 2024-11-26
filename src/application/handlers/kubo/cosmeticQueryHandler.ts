@@ -51,10 +51,13 @@ class CosmeticQueryHandler implements
             throw new NotFoundError("Cosmetic not found.");
     
         return {
-            id: cosmetic._id,
-            name: cosmetic.name,
-            imagePath: cosmetic.imagePath,
-            type: cosmetic.type.type
+            data: {
+                id: cosmetic._id,
+                name: cosmetic.name,
+                imagePath: cosmetic.imagePath,
+                type: cosmetic.type.type
+            },
+            message: "Cosmetic option details found.",
         };
     }
 
@@ -74,12 +77,13 @@ class CosmeticQueryHandler implements
         );
 
         return {
-            cosmetics: cosmeticsFetch.data.map(c => ({
+            data: cosmeticsFetch.data.map(c => ({
                 id: c._id,
                 name: c.name,
                 type: c.type.type,
                 imagePath: c.imagePath
             })),
+            message: "List of cosmetics found.",
             currentPage: cosmeticsFetch.currentPage,
             totalPages: cosmeticsFetch.totalPages,
             items: cosmeticsFetch.items,
