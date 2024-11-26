@@ -64,12 +64,8 @@ class KuboCommandHandler implements ICommandHandler<CreateKuboResult, CreateKubo
         await checkCosmetic(command.hatId);
 
         const newKubo = Kubo.createNew({
-            userId: command.userId,
+            ...command.props,
             nickname: Nickname.createNew({ value: command.nickname }),
-            color: command.color,
-            eyesId: command.eyesId,
-            hatId: command.hatId,
-            lastSession: new Date()
         });
 
         const savedKubo = await this.repo.upsertAsync(newKubo);
