@@ -1,11 +1,13 @@
-import { Type } from "typescript";
 import ICommand from "../../seed/command";
 import { v4 as uuid } from "uuid";
+import { OutResponse } from "../../seed/responses";
 
 type AuthenticateUserProps = {
     username: string;
     password: string;
 };
+
+type AuthenticateUserResult = OutResponse<{ token: string }>
 
 class AuthenticateUser implements ICommand<AuthenticateUserProps> {
     commandId: string;
@@ -21,4 +23,5 @@ class AuthenticateUser implements ICommand<AuthenticateUserProps> {
     }
 }
 
+export type { AuthenticateUserResult };
 export default AuthenticateUser;

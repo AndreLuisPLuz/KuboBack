@@ -1,11 +1,14 @@
 import ICommand from "../../seed/command";
 import { v4 as uuid } from "uuid";
+import { OutResponse } from "../../seed/responses";
 
 type RegisterUserProps = {
     username: string;
     email: string;
     password: string;
 };
+
+type RegisterUserResult = OutResponse<{ id: string }>;
 
 class RegisterUser implements ICommand<RegisterUserProps>
 {
@@ -23,4 +26,5 @@ class RegisterUser implements ICommand<RegisterUserProps>
     }
 }
 
+export type { RegisterUserResult };
 export default RegisterUser;

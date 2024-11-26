@@ -2,13 +2,12 @@ import "dotenv/config";
 
 import { injected } from "brandi";
 import { INFRA_TOKENS, infrastructureContainer } from "../../../infrastructure/container";
-import { SucceededAuth } from "../../../domain/aggregates/user/types/authenticationResult";
 import { IUser } from "../../../infrastructure/schemas/user/userSchema";
 
 import User from "../../../domain/aggregates/user/user";
 import ICommandHandler from "../../seed/commandHandler";
-import RegisterUser from "../../commands/user/registerUser"; 
-import AuthenticateUser from "../../commands/user/authenticateUser";
+import RegisterUser, { RegisterUserResult } from "../../commands/user/registerUser"; 
+import AuthenticateUser, { AuthenticateUserResult } from "../../commands/user/authenticateUser";
 import UpsertError from "../../errors/upsertError";
 import Password from "../../../domain/aggregates/user/password";
 import NotFoundError from "../../errors/notFoundError";
@@ -24,8 +23,8 @@ type UserCommand =
 
 class UserCommandHandler
     implements
-        ICommandHandler<string, RegisterUser>,
-        ICommandHandler<string, AuthenticateUser> {
+        ICommandHandler<RegisterUserResult, RegisterUser>,
+        ICommandHandler<AuthenticateUserResult, AuthenticateUser> {
     private repo: IRepository<User>;
 
     constructor(
@@ -38,10 +37,10 @@ class UserCommandHandler
         this.repo = infrastructureContainer.get(INFRA_TOKENS.userRepository);
     };
 
-    handleAsync(command: RegisterUser): Promise<string>;
-    handleAsync(command: AuthenticateUser): Promise<string>;
+    handleAsync(command: RegisterUser): Promise<RegisterUserResult>;
+    handleAsync(command: AuthenticateUser): Promise<AuthenticateUserResult>;
 
-    public async handleAsync(command: UserCommand): Promise<string | SucceededAuth> {
+    public async handleAsync(command: UserCommand): Promise<RegisterUserResult | AuthenticateUserResult> {
         this.solveDependencies();
 
         switch (command.concreteType) {
@@ -51,7 +50,7 @@ class UserCommandHandler
         }
     }
 
-    private async handleAuthenticateUser(command: AuthenticateUser): Promise<string> {
+    private async handleAuthenticateUser(command: AuthenticateUser): Promise<AuthenticateUserResult> {
         const user = await this.repo.findOneAsync(
             new CriteriaBuilder<IUser>()
                 .tryAdd("username", command.username)
@@ -68,12 +67,16 @@ class UserCommandHandler
 
         switch (authenticationResult.kind)
         {
-            case "succeeded": return JwtService.generateToken(authenticationResult);
+            case "succeeded":
+                return {
+                    data: { token: JwtService.generateToken(authenticationResult) },
+                    message: "Authenticated with success."
+                };
             case "failed": throw new FailedAuthenticationError("Unable to authenticate.", authenticationResult);
         }
     }
 
-    private async handleRegisterUser(command: RegisterUser): Promise<string> {
+    private async handleRegisterUser(command: RegisterUser): Promise<RegisterUserResult> {
         const newUser = User.createNew({
             username: command.username,
             email: command.email,
@@ -85,7 +88,10 @@ class UserCommandHandler
         if (savedUser == null)
             throw new UpsertError("Unable to create user.");
 
-        return savedUser._id;
+        return {
+            data: { id: savedUser._id },
+            message: "User saved with success."
+        };
     }
 }
 
