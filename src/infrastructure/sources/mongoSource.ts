@@ -1,15 +1,17 @@
 import "dotenv/config";
 import { HttpProxyAgent } from "http-proxy-agent";
-import mongoose, { ConnectOptions } from "mongoose";
+import mongoose, { ConnectOptions, mongo } from "mongoose";
 
 const getMongoSource = () => {
     const mongoOptions: ConnectOptions = { };
 
-    const proxyUrl = process.env.PROXY_URL;
+    const useProxy = (process.env.PROXY_USE == "true");
 
-    if (proxyUrl !== undefined) {
-        const proxyAgent = new HttpProxyAgent(proxyUrl);
-        mongoOptions[""]
+    if (useProxy) {
+        mongoOptions.proxyHost = process.env.PROXY_HOST;
+        mongoOptions.proxyPort = Number(process.env.PROXY_PORT || 6969);
+        mongoOptions.proxyUsername = process.env.PROXY_USER;
+        mongoOptions.proxyPassword = process.env.PROXY_PASS;
     }
 
     const host = process.env.DB_HOST;
@@ -17,7 +19,7 @@ const getMongoSource = () => {
     const pass = process.env.DB_PASS;
 
     const dbString = `mongodb+srv://${user}:${pass}@${host}/?retryWrites=true&w=majority&appName=KuboWeb`;
-    mongoose.connect(dbString, )
+    mongoose.connect(dbString, mongoOptions)
         .then(() => console.log(`[server]: connected to ${dbString}`));
 }
 

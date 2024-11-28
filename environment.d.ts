@@ -7,7 +7,11 @@ declare global {
             DB_USER: string,
             DB_PASS: string,
 
-            PROXY_URL: string | undefined,
+            PROXY_USE: "true" | "false",
+            PROXY_HOST: string | undefined,
+            PROXY_PORT: number | undefined,
+            PROXY_USER: string | undefined,
+            PROXY_PASS: string | undefined,
 
             APP_PORT: string,
             APP_SECRET_KEY: string,
