@@ -74,7 +74,7 @@ class KuboController {
 
 injected(
     KuboController,
-    APP_TOKENS.kuboCommandHandler, 
+    APP_TOKENS.kuboCommandHandler,
     APP_TOKENS.cosmeticCommandHandler,
     APP_TOKENS.cosmeticQueryHandler,
 );
