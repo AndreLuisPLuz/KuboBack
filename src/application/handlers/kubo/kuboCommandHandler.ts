@@ -55,7 +55,7 @@ class KuboCommandHandler implements ICommandHandler<CreateKuboResult, CreateKubo
                 throw new NotFoundError("Cosmetics not found.");
         };
 
-        const userExists = this.userRepo.existsAsync(command.userId);
+        const userExists = await this.userRepo.existsAsync(command.userId);
 
         if (!userExists)
             throw new NotFoundError("User not found.");
