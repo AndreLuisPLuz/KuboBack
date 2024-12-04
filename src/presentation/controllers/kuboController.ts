@@ -10,18 +10,23 @@ import GetManyCosmetics from "../../application/queries/kubo/getManyCosmetics";
 import CreateKubo from "../../application/commands/kubo/createKubo";
 import DeleteCosmetic from "../../application/commands/kubo/deleteCosmetic";
 import MisssingParamError from "../errors/missingParamError";
+import GetKuboDetails from "../../application/queries/kubo/getKuboDetails";
+import KuboQueryHandler from "../../application/handlers/kubo/kuboQueryHandler";
 
 class KuboController {
     private kuboCommHandler: KuboCommandHandler;
+    private kuboQueryHandler: KuboQueryHandler;
     private cosmeticCommHandler: CosmeticCommandHandler;
     private cosmeticQueryHandler: CosmeticQueryHandler;
 
     public constructor(
             kuboCommandHandler: KuboCommandHandler,
+            kuboQueryHandler: KuboQueryHandler,
             cosmeticCommandHandler: CosmeticCommandHandler,
             cosmeticQueryHandler: CosmeticQueryHandler
     ) {
         this.kuboCommHandler = kuboCommandHandler;
+        this.kuboQueryHandler = kuboQueryHandler;
         this.cosmeticCommHandler = cosmeticCommandHandler;
         this.cosmeticQueryHandler = cosmeticQueryHandler;
     }
@@ -31,7 +36,15 @@ class KuboController {
             new CreateKubo(req.body)
         );
 
-        return res.status(204).json(result);
+        return res.status(201).json(result);
+    };
+
+    public FetchKubo = async (req: Request, res: Response): Promise<Response> => {
+        const result = await this.kuboQueryHandler.handleAsync(
+            new GetKuboDetails()
+        );
+
+        return res.status(200).json(result);
     };
 
     public CreateCosmeticOption = async (req: Request, res: Response): Promise<Response> => {
@@ -75,6 +88,7 @@ class KuboController {
 injected(
     KuboController,
     APP_TOKENS.kuboCommandHandler,
+    APP_TOKENS.KuboQueryHandler,
     APP_TOKENS.cosmeticCommandHandler,
     APP_TOKENS.cosmeticQueryHandler,
 );

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import InvalidHeaderError from "../../application/errors/invalidHeaderError";
-import JwtService from "../../application/crossCutting/services/jwtService";
+import { APP_TOKENS, applicationContainer } from "../../application/container";
 
 const authenticate = async(req: Request, res: Response, next: NextFunction) => {
     const authToken = req.headers.authorization;
@@ -8,7 +8,9 @@ const authenticate = async(req: Request, res: Response, next: NextFunction) => {
     if (!authToken)
         throw new InvalidHeaderError("Authorization header not present.");
 
-    JwtService.validateToken(authToken);
+    var jwtService = applicationContainer.get(APP_TOKENS.jwtService);
+
+    jwtService.validateToken(authToken);
     next()
 };
 
