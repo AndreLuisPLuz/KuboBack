@@ -37,11 +37,11 @@ class JwtService {
         this.solveDependencies();
 
         jsonwebtoken.verify(token, process.env.APP_SECRET_KEY!,
-            (err: any, { userId }: any) => {
+            (err: any, decoded: any) => {
                 if (err)
                     throw new InvalidTokenError("Invalid token.")
                 
-                this.userContext.fill({ userId });
+                this.userContext.fill(decoded.userId);
             }
         )
     };
