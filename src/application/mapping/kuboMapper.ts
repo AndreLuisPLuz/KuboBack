@@ -14,15 +14,11 @@ class KuboMapper {
                 happiness: kubo.happiness.level,
                 hat: {
                     id: kubo.hatId,
-                    name: hat.name,
-                    imagePath: hat.name,
-                    type: hat.type.type,
+                    imagePath: hat.imagePath,
                 },
                 eyes: {
                     id: kubo.eyesId,
-                    name: eyes.name,
-                    imagePath: eyes.name,
-                    type: eyes.type.type,
+                    imagePath: eyes.imagePath,
                 },
             },
             message: "Kubo details found."

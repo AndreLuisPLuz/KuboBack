@@ -12,8 +12,8 @@ type KuboDto = {
     health: number;
     hunger: number;
     happiness: number;
-    hat: CosmeticDto;
-    eyes: CosmeticDto;
+    hat: Omit<CosmeticDto, "name" | "type">;
+    eyes: Omit<CosmeticDto, "name" | "type">;
 }
 
 export type {
