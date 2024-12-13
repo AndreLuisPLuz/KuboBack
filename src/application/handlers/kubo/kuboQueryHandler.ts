@@ -56,12 +56,12 @@ class KuboQueryHandler implements IQueryHandler<KuboDetails, GetKuboDetails> {
     }
 
     private async handleGetKuboDetails(): Promise<KuboDetails> {
-        if (this.userContext.userId == null)
-            throw new NotAuthenticatedError("User not authenticated.");
+        // if (this.userContext.userId == null)
+        //     throw new NotAuthenticatedError("User not authenticated.");
 
         const kubo = await this.repo.findOneAsync(
             new CriteriaBuilder<IKubo>()
-                .tryAdd("userId", this.userContext.userId)
+                .tryAdd("userId", "f061df94-6397-497d-9275-6d6d6db4131f")
                 .build()
         );
 

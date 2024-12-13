@@ -11,6 +11,6 @@ const crossCuttingContainer = new Container().extend(infrastructureContainer);
 
 crossCuttingContainer.bind(CROSS_TOKENS.userContext)
     .toInstance(UserContext)
-    .inContainerScope();
+    .inResolutionScope();
 
 export { CROSS_TOKENS, crossCuttingContainer };
